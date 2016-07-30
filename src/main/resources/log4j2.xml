@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error" name="foxdsp" packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="debuglog">${basedir}/logs/debug.log</Property>
+        <Property name="errorlog">${basedir}/logs/error.log</Property>
+    </Properties>
+    <ThresholdFilter level="debug"/>
+
+    <Appenders>
+        <Console name="STDOUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:[%p][%t] %r   %l %m%n"/>
+        </Console>
+        <List name="List">
+            <ThresholdFilter level="debug"/>
+        </List>
+        <Routing name="Debug">
+            <Routes pattern="$${sd:type}">
+                <Route>
+                    <RollingFile name="Rolling-${sd:type}" fileName="${debuglog}"
+                                 filePattern="${basedir}/logs/debug.%i.log" immediateFlush ="true">
+                        <PatternLayout>
+                            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+                        </PatternLayout>
+                        <SizeBasedTriggeringPolicy size="500000" />
+                    </RollingFile>
+                </Route>
+                <Route ref="STDOUT" key="Audit"/>
+                <Route ref="List" key="Service"/>
+            </Routes>
+        </Routing>
+        <Routing name="Error">
+            <Routes pattern="$${sd:type}">
+                <Route>
+                    <RollingFile name="Rolling-${sd:type}" fileName="${errorlog}"
+                                 filePattern="${basedir}/logs/error.%i.log">
+                        <PatternLayout>
+                            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+                        </PatternLayout>
+                        <SizeBasedTriggeringPolicy size="500000" />
+                    </RollingFile>
+                </Route>
+                <Route ref="STDOUT" key="Audit"/>
+                <Route ref="List" key="Service"/>
+            </Routes>
+        </Routing>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="forDebug" level="debug" additivity="false">
+            <AppenderRef ref="Debug"/>
+        </Logger>
+        <Logger name="forError" level="error" additivity="false">
+            <AppenderRef ref="Error"/>
+        </Logger>
+
+        <Root level="error">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
