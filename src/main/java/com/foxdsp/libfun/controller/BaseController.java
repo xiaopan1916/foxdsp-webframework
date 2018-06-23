@@ -144,7 +144,7 @@ public class BaseController extends Controller {
         }
         for (int i = 0; i <100; i++) {
             System.out.println("什么鬼");
-            System.out.println("这个是dev");
+            System.out.println("这个xxxxxxxxx是dev");
         }
         UserInfo info = (UserInfo) userInfo;
         return info.getUserlogno();
