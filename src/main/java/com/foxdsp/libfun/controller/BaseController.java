@@ -142,6 +142,9 @@ public class BaseController extends Controller {
         if (userInfo == null) {
             return null;
         }
+        for (int i = 0; i <100; i++) {
+            System.out.println("什么鬼");
+        }
         UserInfo info = (UserInfo) userInfo;
         return info.getUserlogno();
     }
