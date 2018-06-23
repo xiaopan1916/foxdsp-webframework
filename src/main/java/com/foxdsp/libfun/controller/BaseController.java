@@ -150,6 +150,9 @@ public class BaseController extends Controller {
      * @return
      */
     public boolean isSuperMan() {
+        if ( == null) {
+            
+        }
         UserInfo userInfo = getUserInfo();
         Users user = userInfo.getUser();
         return user.getSuperMan() != 0 ;
